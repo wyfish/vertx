@@ -86,6 +86,17 @@ public interface VertxMetrics extends Metrics, Measured {
   }
 
   /**
+   * Provides the client metrics SPI when a client has been created.<p/>
+   * <p>
+   * No specific thread and context can be expected when this method is called.
+   *
+   * @return the client metrics SPI or {@code null} when metrics are disabled
+   */
+  default ClientMetrics<?, ?, ?, ?, ?> createClientMetrics() {
+    return null;
+  }
+
+  /**
    * Provides the http client metrics SPI when an http client has been created.<p/>
    * <p>
    * No specific thread and context can be expected when this method is called.

@@ -35,46 +35,7 @@ import io.vertx.core.net.SocketAddress;
  *
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public interface HttpClientMetrics<R, W, S, E, T> extends TCPMetrics<S> {
-
-  /**
-   * Provides metrics for a particular endpoint
-   *
-   * @param host the endpoint host possibly unresolved
-   * @param port the endpoint port
-   * @param maxPoolSize the server max pool size
-   * @return the endpoint metric
-   */
-  default E createEndpoint(String host, int port, int maxPoolSize) {
-    return null;
-  }
-
-  /**
-   * Called when an endpoint is closed.
-   *
-   * @param host the server host
-   * @param port the server port
-   * @param endpointMetric the server metric returned by {@link #createEndpoint}
-   */
-  default void closeEndpoint(String host, int port, E endpointMetric) {
-  }
-
-  /**
-   * Called when a connection is requested.
-   *
-   * @param endpointMetric the endpoint metric returned by {@link #createEndpoint}
-   */
-  default T enqueueRequest(E endpointMetric) {
-    return null;
-  }
-
-  /**
-   * Called when a request for connection is satisfied.
-   *
-   * @param endpointMetric the endpoint metric returned by {@link #createEndpoint}
-   */
-  default void dequeueRequest(E endpointMetric, T taskMetric) {
-  }
+public interface HttpClientMetrics<R, W, S, E, T> extends TCPMetrics<S>, ClientMetrics<R, E, T, HttpClientRequest, HttpClientResponse> {
 
   /**
    * Called when a connection is made to a endpoint.
@@ -93,38 +54,6 @@ public interface HttpClientMetrics<R, W, S, E, T> extends TCPMetrics<S> {
   }
 
   /**
-   * Called when an http client request begins. Vert.x will invoke {@link #requestEnd} when the request
-   * has ended or {@link #requestReset} if the request/response has failed before.
-   *
-   * @param endpointMetric the endpoint metric
-   * @param localAddress the local address
-   * @param remoteAddress the remote address
-   * @param request the {@link HttpClientRequest}
-   * @return the request metric
-   */
-  default R requestBegin(E endpointMetric, SocketAddress localAddress, SocketAddress remoteAddress, HttpClientRequest request) {
-    return null;
-  }
-
-  /**
-   * Callend when an http client request ends.
-   *
-   * @param requestMetric the request metric
-   */
-  default void requestEnd(R requestMetric) {
-  }
-
-  /**
-   * Called when an http client response begins. Vert.x will invoke {@link #responseEnd} when the response has ended
-   *  or {@link #requestReset} if the request/response has failed before.
-   *
-   * @param requestMetric the request metric
-   * @param response the {@link io.vertx.core.http.HttpClientResponse}
-   */
-  default void responseBegin(R requestMetric, HttpClientResponse response) {
-  }
-
-  /**
    * Called when an http client response is pushed.
    *
    * @param endpointMetric the endpoint metric
@@ -135,24 +64,6 @@ public interface HttpClientMetrics<R, W, S, E, T> extends TCPMetrics<S> {
    */
   default R responsePushed(E endpointMetric, SocketAddress localAddress, SocketAddress remoteAddress, HttpClientRequest request) {
     return null;
-  }
-
-  /**
-   * Called when the http client request couldn't complete successfully, for instance the connection
-   * was closed before the response was received.
-   *
-   * @param requestMetric the request metric
-   */
-  default void requestReset(R requestMetric) {
-  }
-
-  /**
-   * Called when an http client response has ended
-   *
-   * @param requestMetric the request metric
-   * @param response the {@link io.vertx.core.http.HttpClientResponse}
-   */
-  default void responseEnd(R requestMetric, HttpClientResponse response) {
   }
 
   /**

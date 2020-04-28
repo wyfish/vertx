@@ -38,6 +38,12 @@ public class DummyVertxMetrics implements VertxMetrics {
 
   }
 
+  public static class DummyClientMetrics implements ClientMetrics<Void, Void, Void, Void, Void> {
+
+    public static final DummyClientMetrics INSTANCE = new DummyClientMetrics();
+
+  }
+
   public static class DummyTCPMetrics implements TCPMetrics<Void> {
 
     public static final DummyTCPMetrics INSTANCE = new DummyTCPMetrics();
