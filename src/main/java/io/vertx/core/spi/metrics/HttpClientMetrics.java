@@ -78,37 +78,31 @@ public interface HttpClientMetrics<R, W, S, E, T> extends TCPMetrics<S> {
 
   /**
    * Called when a connection is made to a endpoint.
+   *  @param endpointMetric the endpoint metric
    *
-   * @param endpointMetric the endpoint metric
-   * @param socketMetric the socket metric
    */
-  default void endpointConnected(E endpointMetric, S socketMetric) {
+  default void endpointConnected(E endpointMetric) {
   }
 
   /**
    * Called when a connection to an endpoint is closed.
+   *  @param endpointMetric the endpoint metric
    *
-   * @param endpointMetric the endpoint metric
-   * @param socketMetric the socket metric
    */
-  default void endpointDisconnected(E endpointMetric, S socketMetric) {
+  default void endpointDisconnected(E endpointMetric) {
   }
 
   /**
    * Called when an http client request begins. Vert.x will invoke {@link #requestEnd} when the request
    * has ended or {@link #requestReset} if the request/response has failed before.
    *
-   *
-   *
-   *
    * @param endpointMetric the endpoint metric
-   * @param socketMetric the socket metric
    * @param localAddress the local address
    * @param remoteAddress the remote address
    * @param request the {@link HttpClientRequest}
    * @return the request metric
    */
-  default R requestBegin(E endpointMetric, S socketMetric, SocketAddress localAddress, SocketAddress remoteAddress, HttpClientRequest request) {
+  default R requestBegin(E endpointMetric, SocketAddress localAddress, SocketAddress remoteAddress, HttpClientRequest request) {
     return null;
   }
 
@@ -134,13 +128,12 @@ public interface HttpClientMetrics<R, W, S, E, T> extends TCPMetrics<S> {
    * Called when an http client response is pushed.
    *
    * @param endpointMetric the endpoint metric
-   * @param socketMetric the socket metric
    * @param localAddress the local address
    * @param remoteAddress the remote address
    * @param request the http server request
    * @return the request metric
    */
-  default R responsePushed(E endpointMetric, S socketMetric, SocketAddress localAddress, SocketAddress remoteAddress, HttpClientRequest request) {
+  default R responsePushed(E endpointMetric, SocketAddress localAddress, SocketAddress remoteAddress, HttpClientRequest request) {
     return null;
   }
 
@@ -166,11 +159,10 @@ public interface HttpClientMetrics<R, W, S, E, T> extends TCPMetrics<S> {
    * Called when a web socket connects.
    *
    * @param endpointMetric the endpoint metric
-   * @param socketMetric the socket metric
    * @param webSocket the server web socket
    * @return the web socket metric
    */
-  default W connected(E endpointMetric, S socketMetric, WebSocket webSocket) {
+  default W connected(E endpointMetric, WebSocket webSocket) {
     return null;
   }
 

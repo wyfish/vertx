@@ -93,18 +93,18 @@ public class FakeHttpClientMetrics extends FakeMetricsBase implements HttpClient
   }
 
   @Override
-  public void endpointConnected(EndpointMetric endpointMetric, SocketMetric socketMetric) {
+  public void endpointConnected(EndpointMetric endpointMetric) {
     endpointMetric.connectionCount.incrementAndGet();
   }
 
   @Override
-  public void endpointDisconnected(EndpointMetric endpointMetric, SocketMetric socketMetric) {
+  public void endpointDisconnected(EndpointMetric endpointMetric) {
     endpointMetric.connectionCount.decrementAndGet();
   }
 
   @Override
-  public WebSocketMetric connected(EndpointMetric endpointMetric, SocketMetric socketMetric, WebSocket webSocket) {
-    WebSocketMetric metric = new WebSocketMetric(socketMetric, webSocket);
+  public WebSocketMetric connected(EndpointMetric endpointMetric, WebSocket webSocket) {
+    WebSocketMetric metric = new WebSocketMetric(webSocket);
     webSockets.put(webSocket, metric);
     return metric;
   }
@@ -115,9 +115,9 @@ public class FakeHttpClientMetrics extends FakeMetricsBase implements HttpClient
   }
 
   @Override
-  public HttpClientMetric requestBegin(EndpointMetric endpointMetric, SocketMetric socketMetric, SocketAddress localAddress, SocketAddress remoteAddress, HttpClientRequest request) {
+  public HttpClientMetric requestBegin(EndpointMetric endpointMetric, SocketAddress localAddress, SocketAddress remoteAddress, HttpClientRequest request) {
     endpointMetric.requests.incrementAndGet();
-    HttpClientMetric metric = new HttpClientMetric(endpointMetric, request, socketMetric);
+    HttpClientMetric metric = new HttpClientMetric(endpointMetric, request);
     requests.put(request, metric);
     return metric;
   }
@@ -134,9 +134,9 @@ public class FakeHttpClientMetrics extends FakeMetricsBase implements HttpClient
   }
 
   @Override
-  public HttpClientMetric responsePushed(EndpointMetric endpointMetric, SocketMetric socketMetric, SocketAddress localAddress, SocketAddress remoteAddress, HttpClientRequest request) {
+  public HttpClientMetric responsePushed(EndpointMetric endpointMetric, SocketAddress localAddress, SocketAddress remoteAddress, HttpClientRequest request) {
     endpointMetric.requests.incrementAndGet();
-    HttpClientMetric metric = new HttpClientMetric(endpointMetric, request, socketMetric);
+    HttpClientMetric metric = new HttpClientMetric(endpointMetric, request);
     requests.put(request, metric);
     return metric;
   }

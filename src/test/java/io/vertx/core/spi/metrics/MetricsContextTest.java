@@ -299,7 +299,7 @@ public class MetricsContextTest extends VertxTestBase {
       public HttpClientMetrics createHttpClientMetrics(HttpClientOptions options) {
         return new DummyHttpClientMetrics() {
           @Override
-          public Void requestBegin(Void endpointMetric, Void socketMetric, SocketAddress localAddress, SocketAddress remoteAddress, HttpClientRequest request) {
+          public Void requestBegin(Void endpointMetric, SocketAddress localAddress, SocketAddress remoteAddress, HttpClientRequest request) {
             requestBeginCalled.set(true);
             return null;
           }
@@ -398,7 +398,7 @@ public class MetricsContextTest extends VertxTestBase {
       public HttpClientMetrics createHttpClientMetrics(HttpClientOptions options) {
         return new DummyHttpClientMetrics() {
           @Override
-          public Void connected(Void endpointMetric, Void socketMetric, WebSocket webSocket) {
+          public Void connected(Void endpointMetric, WebSocket webSocket) {
             webSocketConnected.set(true);
             assertTrue(Context.isOnEventLoopThread());
             return null;

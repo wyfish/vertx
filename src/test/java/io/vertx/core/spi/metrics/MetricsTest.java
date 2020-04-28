@@ -534,7 +534,6 @@ public class MetricsTest extends VertxTestBase {
       FakeHttpServerMetrics metrics = FakeMetricsBase.getMetrics(server);
       WebSocketMetric metric = metrics.getMetric(ws);
       assertNotNull(metric);
-      assertNotNull(metric.soMetric);
       ws.handler(ws::write);
       ws.closeHandler(closed -> {
         assertNull(metrics.getMetric(ws));
@@ -562,7 +561,6 @@ public class MetricsTest extends VertxTestBase {
       assertNull(metrics.getMetric(req));
       WebSocketMetric metric = metrics.getMetric(ws);
       assertNotNull(metric);
-      assertNotNull(metric.soMetric);
       ws.handler(buffer -> ws.write(buffer));
       ws.closeHandler(closed -> {
         WebSocketMetric a = metrics.getMetric(ws);
@@ -597,7 +595,6 @@ public class MetricsTest extends VertxTestBase {
         FakeHttpClientMetrics metrics = FakeMetricsBase.getMetrics(client);
         WebSocketMetric metric = metrics.getMetric(ws);
         assertNotNull(metric);
-        assertNotNull(metric.soMetric);
         ws.closeHandler(closed -> {
           assertNull(metrics.getMetric(ws));
           testComplete();
@@ -804,10 +801,10 @@ public class MetricsTest extends VertxTestBase {
         assertEquals(5, serverMetric.socket.bytesRead.get());
         assertEquals(5, serverMetric.socket.bytesWritten.get());
         assertEquals(serverMetric.socket.remoteAddress.host(), serverMetric.socket.remoteName);
-        assertFalse(clientMetric.get().socket.connected.get());
-        assertEquals(5, clientMetric.get().socket.bytesRead.get());
-        assertEquals(5, clientMetric.get().socket.bytesWritten.get());
-        checker.accept(clientMetric.get().socket);
+//        assertFalse(clientMetric.get().socket.connected.get());
+//        assertEquals(5, clientMetric.get().socket.bytesRead.get());
+//        assertEquals(5, clientMetric.get().socket.bytesWritten.get());
+//        checker.accept(clientMetric.get().socket);
         complete();
       });
     }).listen(8080, onSuccess(s -> {

@@ -230,7 +230,7 @@ public class HttpChannelConnector implements ConnectionProvider<HttpClientConnec
       if (metrics != null) {
         Object socketMetric = metrics.connected(conn.remoteAddress(), conn.remoteName());
         conn.metric(socketMetric);
-        metrics.endpointConnected(endpointMetric, socketMetric);
+        metrics.endpointConnected(endpointMetric);
       }
       return conn;
     });

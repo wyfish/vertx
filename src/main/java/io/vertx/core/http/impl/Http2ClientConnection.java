@@ -186,7 +186,7 @@ class Http2ClientConnection extends Http2ConnectionBase implements HttpClientCon
         HttpClientRequestPushPromise pushReq = new HttpClientRequestPushPromise(this, client, isSsl(), method, uri, host, port, headersMap);
         pushReq.getStream().init(promisedStream);
         if (metrics != null) {
-          ((Stream)pushReq.getStream()).metric = metrics.responsePushed(queueMetric, metric(), localAddress(), remoteAddress(), pushReq);
+          ((Stream)pushReq.getStream()).metric = metrics.responsePushed(queueMetric, localAddress(), remoteAddress(), pushReq);
         }
         stream.context.emit(pushReq, pushHandler);
         return;
@@ -248,7 +248,7 @@ class Http2ClientConnection extends Http2ConnectionBase implements HttpClientCon
         return;
       }
       if (conn.metrics != null) {
-        metric = conn.metrics.requestBegin(conn.queueMetric, conn.metric(), conn.localAddress(), conn.remoteAddress(), request);
+        metric = conn.metrics.requestBegin(conn.queueMetric, conn.localAddress(), conn.remoteAddress(), request);
       }
       init(stream);
       super.doWriteHeaders(headers, end, handler);
@@ -559,7 +559,7 @@ class Http2ClientConnection extends Http2ConnectionBase implements HttpClientCon
         Object m = socketMetric;
         if (m == null)  {
           m = metrics.connected(conn.remoteAddress(), conn.remoteName());
-          metrics.endpointConnected(queueMetric, m);
+          metrics.endpointConnected(queueMetric);
         }
         conn.metric(m);
       }
@@ -571,7 +571,7 @@ class Http2ClientConnection extends Http2ConnectionBase implements HttpClientCon
     });
     handler.removeHandler(conn -> {
       if (metrics != null) {
-        metrics.endpointDisconnected(queueMetric, conn.metric());
+        metrics.endpointDisconnected(queueMetric);
       }
       listener.onEvict();
     });

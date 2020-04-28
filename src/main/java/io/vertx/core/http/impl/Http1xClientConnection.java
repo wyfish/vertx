@@ -159,7 +159,7 @@ class Http1xClientConnection extends Http1xConnectionBase<WebSocketImpl> impleme
       responses.add(stream);
       this.netSocketPromise = ((StreamImpl)stream).netSocketPromise;
       if (this.metrics != null) {
-        stream.metric = this.metrics.requestBegin(this.endpointMetric, this.metric(), this.localAddress(), this.remoteAddress(), stream.request);
+        stream.metric = this.metrics.requestBegin(this.endpointMetric, this.localAddress(), this.remoteAddress(), stream.request);
       }
       VertxTracer tracer = context.tracer();
       if (tracer != null) {
@@ -744,7 +744,7 @@ class Http1xClientConnection extends Http1xConnectionBase<WebSocketImpl> impleme
         }
         log.debug("WebSocket handshake complete");
         if (metrics != null) {
-          webSocket.setMetric(metrics.connected(endpointMetric, metric(), webSocket));
+          webSocket.setMetric(metrics.connected(endpointMetric, webSocket));
         }
         getContext().dispatch(wsRes, res -> {
           if (res.succeeded()) {
@@ -825,7 +825,7 @@ class Http1xClientConnection extends Http1xConnectionBase<WebSocketImpl> impleme
     }
     closed = true;
     if (metrics != null) {
-      metrics.endpointDisconnected(endpointMetric, metric());
+      metrics.endpointDisconnected(endpointMetric);
     }
     WebSocketImpl ws;
     VertxTracer tracer = context.tracer();
